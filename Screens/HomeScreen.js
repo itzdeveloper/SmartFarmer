@@ -20,7 +20,6 @@ const HomeScreen = () => {
   const [humidity, setHumidity] = useState({});
   const [status, setStatus] = useState({});
   const [motorstatus, setMotorStatus] = useState("");
-  const [once, setOnce] = useState(true);
 
   const fetchData = async () => {
     const resp = [
@@ -53,10 +52,7 @@ const HomeScreen = () => {
     setSoil(respjson[2]);
     setTemp(respjson[3]);
     setHumidity(respjson[4]);
-    if(once) {
-      setStatus(respjson[5]);
-      setOnce(false);
-    }
+    setStatus(respjson[5]);
   };
 
   useEffect(() => {
@@ -92,7 +88,7 @@ const HomeScreen = () => {
       if (status.field6 != motor.field6) {
         setMotorStatus("");
         setStatus(motor);
-        alert("Motor is" + status.field6 === 1? "On": "Off");
+        alert(motor.field6 == 1 ? "Motor is On" : "Motor is Off");
         await new Promise((r) => setTimeout(r, 1000));
         break;
       }
