@@ -92,6 +92,7 @@ const HomeScreen = () => {
       if (status.field6 != motor.field6) {
         setMotorStatus("");
         setStatus(motor);
+        alert("Motor is" + status.field6 === 1? "On": "Off");
         await new Promise((r) => setTimeout(r, 1000));
         break;
       }
