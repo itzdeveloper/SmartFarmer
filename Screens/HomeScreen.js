@@ -20,6 +20,7 @@ const HomeScreen = () => {
   const [humidity, setHumidity] = useState({});
   const [status, setStatus] = useState({});
   const [motorstatus, setMotorStatus] = useState("");
+  const [once, setOnce] = useState(true);
 
   const fetchData = async () => {
     const resp = [
@@ -52,7 +53,10 @@ const HomeScreen = () => {
     setSoil(respjson[2]);
     setTemp(respjson[3]);
     setHumidity(respjson[4]);
-    setStatus(respjson[5]);
+    if(once) {
+      setStatus(respjson[5]);
+      setOnce(false);
+    }
   };
 
   useEffect(() => {
@@ -65,7 +69,7 @@ const HomeScreen = () => {
         setUser(documentSnapshot.data());
       });
     fetchData();
-    const dataInterval = setInterval(() => fetchData(), 3 * 1000);
+    const dataInterval = setInterval(() => fetchData(), 3000);
     return () => unsubscribe() && clearInterval(dataInterval);
   }, []);
 
@@ -86,13 +90,13 @@ const HomeScreen = () => {
       );
       const motor = await resp.json();
       if (status.field6 != motor.field6) {
-        await new Promise((r) => setTimeout(r, 1000));
         setMotorStatus("");
+        setStatus(motor);
+        await new Promise((r) => setTimeout(r, 1000));
         break;
       }
     }
   };
-
   return (
     <View style={styles.container}>
       <View>
